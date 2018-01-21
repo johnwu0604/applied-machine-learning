@@ -50,6 +50,33 @@ def visualizeDataFit(poly_matrix, weighted_matrix, output_matrix, title, degree)
     plt.tight_layout()
     plt.show()
 
+''' Visualizes the regularization and returns the optimal parameters'''
+def computeOptimalRegularization(train_poly_matrix, train_output_matrix, test_poly_matrix, test_output_matrix, degree):
+    lamba_values = []
+    mse_values = []
+    best_lambda = 0.0
+    best_mse = 10000
+    interval = 1 / NUM_LAMBDA_VALUE
+    lambd = interval
+    for i in range(1, NUM_LAMBDA_VALUE):
+        w_matrix_reg = findWeightedMatrix(train_poly_matrix, train_output_matrix, lambd, degree)
+        mse = findMSE(test_poly_matrix, w_matrix_reg, test_output_matrix)
+        lamba_values.append(lambd)
+        mse_values.append(mse)
+        if best_mse > mse:
+            best_lambda = lambd
+            best_mse = mse
+        lambd += interval
+    return best_lambda, best_mse, lamba_values, mse_values
+
+def visualizeRegularization(lambd_values, mse_values, title):
+    plt.scatter(lambd_values, mse_values)
+    plt.title(title)
+    plt.xlabel('Lambda')
+    plt.ylabel('Mean Squared Error')
+    plt.tight_layout()
+    plt.show()
+
 # compute training/validation/testing matrices
 train_poly_matrix, train_output_matrix = findPolyMatrix(pd.read_csv(TRAIN_DATA, header=None), POLY_DEGREE)
 valid_poly_matrix, valid_output_matrix = findPolyMatrix(pd.read_csv(VALID_DATA, header=None), POLY_DEGREE)
@@ -64,21 +91,20 @@ print('MSE without regularization: ')
 print(mse_no_reg)
 
 # 20-degree polynomial with regularization
-best_lambda = 0.0
-best_mse = 10000
-interval = 1 / NUM_LAMBDA_VALUE
-lamba = 0.0
-for i in range(NUM_LAMBDA_VALUE):
-    w_matrix_reg = findWeightedMatrix(train_poly_matrix, train_output_matrix, lamba, POLY_DEGREE)
-    mse_reg = findMSE(valid_poly_matrix, w_matrix_reg, valid_output_matrix)
-    if best_mse > mse_reg:
-        best_lambda = lamba
-        best_mse = mse_reg
-    lamba += interval
-print('Best Lambda:')
-print(best_lambda)
-print('Best MSE:')
-print(best_mse)
+best_lambda_train, best_mse_train, lambda_values_train, mse_values_train = computeOptimalRegularization(
+    train_poly_matrix, train_output_matrix, train_poly_matrix, train_output_matrix, POLY_DEGREE)
+best_lambda_val, best_mse_val, lambda_values_val, mse_values_val = computeOptimalRegularization(
+    train_poly_matrix, train_output_matrix, valid_poly_matrix, valid_output_matrix, POLY_DEGREE)
+visualizeRegularization(lambda_values_train, mse_values_train, 'Training Set')
+visualizeRegularization(lambda_values_val, mse_values_val, 'Validation Set')
+print('Best Lambda Train:')
+print(best_lambda_train)
+print('Best MSE Train:')
+print(best_mse_train)
+print('Best Lambda Validation:')
+print(best_lambda_val)
+print('Best MSE Validation:')
+print(best_mse_val)
 
 
 
