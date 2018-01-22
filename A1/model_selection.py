@@ -50,7 +50,7 @@ def visualizeDataFit(poly_matrix, weighted_matrix, output_matrix, title, degree)
     plt.tight_layout()
     plt.show()
 
-''' Visualizes the regularization and returns the optimal parameters'''
+''' Compute optimal parameters for lambda and its corresponding mse value'''
 def computeOptimalRegularization(train_poly_matrix, train_output_matrix, test_poly_matrix, test_output_matrix, degree):
     lamba_values = []
     mse_values = []
@@ -69,6 +69,7 @@ def computeOptimalRegularization(train_poly_matrix, train_output_matrix, test_po
         lambd += interval
     return best_lambda, best_mse, lamba_values, mse_values
 
+''' Visualizes the regularization'''
 def visualizeRegularization(lambd_values, mse_values, title):
     plt.scatter(lambd_values, mse_values)
     plt.title(title)
@@ -93,18 +94,16 @@ print(mse_no_reg)
 # 20-degree polynomial with regularization
 best_lambda_train, best_mse_train, lambda_values_train, mse_values_train = computeOptimalRegularization(
     train_poly_matrix, train_output_matrix, train_poly_matrix, train_output_matrix, POLY_DEGREE)
+
 best_lambda_val, best_mse_val, lambda_values_val, mse_values_val = computeOptimalRegularization(
     train_poly_matrix, train_output_matrix, valid_poly_matrix, valid_output_matrix, POLY_DEGREE)
+
 visualizeRegularization(lambda_values_train, mse_values_train, 'Training Set')
 visualizeRegularization(lambda_values_val, mse_values_val, 'Validation Set')
-print('Best Lambda Train:')
-print(best_lambda_train)
-print('Best MSE Train:')
-print(best_mse_train)
-print('Best Lambda Validation:')
-print(best_lambda_val)
-print('Best MSE Validation:')
-print(best_mse_val)
+print('Best Lambda Train: ', best_lambda_train)
+print('Best MSE Train: ', best_mse_train)
+print('Best Lambda Validation: ', best_lambda_val)
+print('Best MSE Validation: ', best_mse_val)
 
 
 
