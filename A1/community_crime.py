@@ -44,22 +44,25 @@ def calculateMSE(w, test_data_input, test_data_output):
     return np.sum(np.sum(squared_error)) / squared_error.size
 
 def performRegression():
-    train_data = pd.read_csv('{}CandC−train{}.csv'.format(DATA_DIR, 1), header=None)
-    test_data = pd.read_csv('{}CandC−test{}.csv'.format(DATA_DIR, 1), header=None)
-
-    train_data_input, train_data_output, test_data_input, test_data_output, w = createComputationMatrices(train_data, test_data)
-
-    for i in range(10000):
-        predicted_output = np.matmul(w, train_data_input.T)
-        loss = np.matmul(np.subtract(predicted_output, train_data_output), train_data_input) / train_data_output.shape[0]
-        w = w - STEP_SIZE * loss
-
-    mse = calculateMSE(w, test_data_input, test_data_output)
-    print(mse)
+    mse_values, w_values = [], []
+    for i in range(1, 6):
+        train_data = pd.read_csv('{}CandC−train{}.csv'.format(DATA_DIR, i), header=None)
+        test_data = pd.read_csv('{}CandC−test{}.csv'.format(DATA_DIR, i), header=None)
+        train_data_input, train_data_output, test_data_input, test_data_output, w = createComputationMatrices(train_data, test_data)
+        for j in range(100000):
+            predicted_output = np.matmul(w, train_data_input.T)
+            loss = np.matmul(np.subtract(predicted_output, train_data_output), train_data_input) / train_data_output.shape[0]
+            w = w - STEP_SIZE * loss
+        mse = calculateMSE(w, test_data_input, test_data_output)
+        mse_values.append(mse)
+        w_values.append(w.values.tolist()[0])
+    return mse_values, w_values
 
 
 def main():
     prepareData()
-    performRegression()
+    mse_value, w_values = performRegression()
+    print(mse_value)
+    print(w_values)
 
 main()
