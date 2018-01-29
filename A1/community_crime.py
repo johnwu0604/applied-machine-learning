@@ -102,24 +102,24 @@ def performRidgeRegression():
             best_lambda = lambd_values[i]
     return mse_values, w_values, lambd_values, best_mse, best_lambda
 
-def main():
-    # Part 1
-    print('Preparing Data (Part 1) ...')
-    prepareData()
+# Part 1
+print('Part 1 - Preparing Data \n')
+print('Prepared data can be found in \{} folder \n'.format(DATA_DIR))
+prepareData()
 
-    print('Performing Linear Regression (Part 2) ...')
-    # Part 2
-    mse_value, w_values = performRegression()
-    print('5-fold cross-validation error: ', sum(mse_value)/5)
-    for i in range(5):
-        print('Set {} parameters: '.format(i+1), w_values[i])
+# Part 2
+print('Part 2 - Linear Regression \n')
+mse_value, w_values = performRegression()
+print('5-fold cross-validation error: ', sum(mse_value)/5)
+for i in range(5):
+    print('Set {} parameters: '.format(i+1), w_values[i])
 
-    # Part 3
-    print('Performing Ridge Regression (Part 3) ...\n')
-    mse_values, w_values, lambd_values, best_mse, best_lambd = performRidgeRegression()
-    for i in range(len(mse_values)):
-        print('Lambda Value: ', lambd_values[i])
-        print('Average MSE: ', mse_values[i])
-        print('Parameters: ', w_values[i], '\n')
+# Part 3
+print('Part 3 - Ridge Regression\n')
+mse_values, w_values, lambd_values, best_mse, best_lambd = performRidgeRegression()
+for i in range(len(mse_values)):
+    print('Lambda Value: ', lambd_values[i])
+    print(', Average MSE: ', mse_values[i], '\n')
+    print('Parameters: ', w_values[i], '\n')
 
-main()
+
