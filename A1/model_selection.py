@@ -49,7 +49,7 @@ def visualizeDataFit(poly_matrix, weighted_matrix, output_matrix, title):
 ''' Compute optimal parameters for lambda and its corresponding mse value'''
 def computeOptimalRegularization(train_poly_matrix, train_output_matrix, test_poly_matrix, test_output_matrix, degree):
     lamba_values = []
-    mse_values = []
+i   mse_values = []n_1)
     best_lambda = 0.0
     best_mse = 10000
     interval = 1 / NUM_LAMBDA_VALUE
