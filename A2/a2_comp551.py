@@ -73,7 +73,7 @@ cov = (np.matmul(diff0.T, diff0) + np.matmul(diff1.T, diff1)) / float(len(train_
 # Compute coefficients
 w0 = math.log(prob0) - math.log(prob1) - 0.5 * (np.matmul(np.matmul(mean0.T, np.linalg.pinv(cov)), mean0) - np.matmul(np.matmul(mean1.T, np.linalg.pinv(cov)), mean1))
 w1 = np.matmul(np.linalg.pinv(cov), mean0 - mean1)
-print("w0: ", w0)
+print("w0: ", w0, '\n')
 print("w1: " + str([i for i in w1]) + "\n")
 
 # Compute output prediction
