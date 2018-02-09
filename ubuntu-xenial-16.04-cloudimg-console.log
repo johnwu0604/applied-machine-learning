@@ -609,3 +609,8 @@ list of required st... nodes for the current kernel...
 Ubuntu 16.04.3 LTS ubuntu-xenial ttyS0
 
 ubuntu-xenial login: [24291.716456] systemd[1]: systemd-udevd.service: Watchdog timeout (limit 3min)!
+[44121.623608] systemd[1]: systemd-udevd.service: Watchdog timeout (limit 3min)!
+[44121.698826] systemd[1]: systemd-logind.service: Watchdog timeout (limit 3min)!
+[52869.262511] systemd[1]: systemd-logind.service: Watchdog timeout (limit 3min)!
+[53390.377552] systemd[1]: systemd-udevd.service: Watchdog timeout (limit 3min)!
+[53390.381306] systemd[1]: systemd-logind.service: Watchdog timeout (limit 3min)!
