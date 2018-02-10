@@ -125,9 +125,8 @@ accuracy_steps = []
 for i in range(1, 25):
     confusion = [[0, 0], [0, 0]]
     for j in range(len(test_data)):
-        distances = np.array(np.power(abs(train_data.sub(np.array(np.array(train_data.loc[[j], :])[0]))), 2).sum(axis=1))
-        closest_neighbours_indices = np.argpartition(distances, i)[:i]
-        closest_neighbours = np.array([train_output[k] for k in closest_neighbours_indices])
+        distances = np.array(np.power(abs(train_data.sub(np.array(np.array(test_data.loc[[j], :])[0]))), 2).sum(axis=1))
+        closest_neighbours = np.array([train_output[j] for j in np.argpartition(distances, i)[:i]])
         pred_value = 1 if closest_neighbours.mean() > 0.5 else 0
         true_value = test_output[j]
         if pred_value == 1:
