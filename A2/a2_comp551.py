@@ -84,7 +84,7 @@ pred_output[pred_output > 0] = 0
 pred_output[pred_output < 0] = 1
 
 # Compute confusion matrix
-confusion = [[0, 0], [0, 0]]
+confusion = [[0, 0], [0, 0]] # [[tp, fp],[fn, tn]]
 for i in range(len(test_output)):
     true_value = test_output[i]
     pred_value = pred_output[i]
@@ -115,4 +115,54 @@ print('Precision: ', precision)
 print('Recall: ', recall, '\n')
 
 ''' Part 3 '''
-print('Part 3 - KNN Classifier \n')
+print('Part 3 - k-NN Classifier \n')
+
+# Variables to keep track of result from each step
+confusion_steps = []
+accuracy_steps = []
+
+# Perform knn classifier
+for i in range(1, 25):
+    confusion = [[0, 0], [0, 0]]
+    for j in range(len(test_data)):
+        distances = np.array(np.power(abs(train_data.sub(np.array(np.array(train_data.loc[[j], :])[0]))), 2).sum(axis=1))
+        closest_neighbours_indices = np.argpartition(distances, i)[:i]
+        closest_neighbours = np.array([train_output[k] for k in closest_neighbours_indices])
+        pred_value = 1 if closest_neighbours.mean() > 0.5 else 0
+        true_value = test_output[j]
+        if pred_value == 1:
+            if pred_value == true_value:
+                confusion[0][0] += 1
+            else:
+                confusion[0][1] += 1
+        if pred_value == 0:
+            if pred_value == true_value:
+                confusion[1][1] += 1
+            else:
+                confusion[1][0] += 1
+    tp = confusion[0][0]
+    fp = confusion[0][1]
+    fn = confusion[1][0]
+    tn = confusion[1][1]
+    accuracy = (tp + tn) / (tp + tn + fp + fn)
+    confusion_steps.append(confusion)
+    accuracy_steps.append(accuracy)
+
+# Calculate optimal k
+k_index = accuracy_steps.index(max(accuracy_steps))
+print("Best K Value: ", k_index + 1, '\n')
+
+# Calculate metrics
+confusion = confusion_steps[k_index]
+tp = confusion[0][0]
+fp = confusion[0][1]
+fn = confusion[1][0]
+tn = confusion[1][1]
+accuracy = (tp + tn) / (tp + tn + fp + fn)
+precision = tp / (tp + fp)
+recall = tp / (tp + fn)
+f = 2 * precision * recall / (precision + recall)
+print('F Measure: ', f)
+print('Accuracy: ', accuracy)
+print('Precision: ', precision)
+print('Recall: ', recall, '\n')
