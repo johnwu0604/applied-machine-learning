@@ -1,20 +1,19 @@
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 import math
 
-NEG_MEAN_1 = 'data/DS1_m_0.txt'
-POS_MEAN_1 = 'data/DS1_m_1.txt'
-COV_1 = 'data/DS1_Cov.txt'
+NEG_MEAN = 'data/DS1_m_0.txt'
+POS_MEAN = 'data/DS1_m_1.txt'
+COV = 'data/DS1_Cov.txt'
 TRAIN_DATA = 'generated_data/DS1_train.csv'
 TEST_DATA = 'generated_data/DS1_test.csv'
 
 ''' Part 1 '''
 print('Part 1 - Generating Data Using Dataset 1 Mean and Covariances ... \n')
 # Prepare Data
-mean0 = pd.read_csv(NEG_MEAN_1, header=None)
-mean1 = pd.read_csv(POS_MEAN_1, header=None)
-cov = pd.read_csv(COV_1, header=None)
+mean0 = pd.read_csv(NEG_MEAN, header=None)
+mean1 = pd.read_csv(POS_MEAN, header=None)
+cov = pd.read_csv(COV, header=None)
 mean0.drop([20], axis=1, inplace=True)
 mean1.drop([20], axis=1, inplace=True)
 cov.drop([20], axis=1, inplace=True)
