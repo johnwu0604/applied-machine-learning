@@ -159,6 +159,7 @@ confusion_steps = []
 accuracy_steps = []
 
 # Perform knn classifier
+print('K Value - Accuracy')
 for i in range(1, 25):
     confusion = [[0, 0], [0, 0]]
     for j in range(len(test_data)):
@@ -183,10 +184,11 @@ for i in range(1, 25):
     accuracy = (tp + tn) / (tp + tn + fp + fn)
     confusion_steps.append(confusion)
     accuracy_steps.append(accuracy)
+    print('{} - {}'.format(i, accuracy))
 
 # Calculate optimal k
 k_index = accuracy_steps.index(max(accuracy_steps))
-print("Best K Value: ", k_index + 1, '\n')
+print("\nBest K Value: ", k_index + 1, '\n')
 
 # Calculate metrics
 confusion = confusion_steps[k_index]
