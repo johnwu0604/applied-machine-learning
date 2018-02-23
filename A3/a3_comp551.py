@@ -34,14 +34,13 @@ def write_vocab_data(vocab_count, file):
         f.write(str(key[1]) + ' ' + str(index + 1) + ' ' + str(key[0]) + '\n')
     f.close()
 
-# Write vectors data to a file
+# Write vectors data to a file. Vectors indcate the indices of the non-zero values
 def write_vector_data(vectors, output, file):
     f = open(file, 'w')
     for i in range(vectors.shape[0]):
         non_zero = np.flatnonzero(np.array(vectors[i])).tolist()
-        f.write((''.join([' ' + str(item) for item in non_zero])) + '\t' + str(output[i]) + '\n')
+        f.write((''.join([' ' + str(value) for value in non_zero])) + '\t' + str(output[i]) + '\n')
     f.close()
-    return
 
 
 ''' Part 1 - Cleaning and Vectorizing Data \n '''
@@ -64,6 +63,7 @@ write_vocab_data(imdb_count, 'generated_datasets/imdb-vocab.txt')
 # Create vectorizer object for vectorizing dataset
 vectorizer = CountVectorizer(vocabulary=yelp_vocab)
 vectorizer_bin = CountVectorizer(vocabulary=yelp_vocab, binary=True)
+
 # Create frequency bag of words vectors
 yelp_train_freq = normalize(vectorizer.fit_transform(yelp_train_rev).todense())
 yelp_valid_freq = normalize(vectorizer.fit_transform(yelp_valid_rev).todense())
@@ -71,12 +71,13 @@ yelp_test_freq = normalize(vectorizer.fit_transform(yelp_test_rev).todense())
 imdb_train_freq = normalize(vectorizer.fit_transform(imdb_train_rev).todense())
 imdb_valid_freq = normalize(vectorizer.fit_transform(imdb_valid_rev).todense())
 imdb_test_freq = normalize(vectorizer.fit_transform(imdb_test_rev).todense())
-write_vector_data(yelp_train_freq, yelp_train_rat, 'generated_datasets/yelp-train-frequency-vectors.txt')
-write_vector_data(yelp_valid_freq, yelp_valid_rat, 'generated_datasets/yelp-valid-frequency-vectors.txt')
-write_vector_data(yelp_test_freq, yelp_test_rat, 'generated_datasets/yelp-test-frequency-vectors.txt')
-write_vector_data(imdb_train_freq, yelp_train_rat, 'generated_datasets/imdb-train-frequency-vectors.txt')
-write_vector_data(imdb_valid_freq, yelp_valid_rat, 'generated_datasets/imdb-valid-frequency-vectors.txt')
-write_vector_data(imdb_test_freq, yelp_test_rat, 'generated_datasets/imdb-test-frequency-vectors.txt')
+write_vector_data(yelp_train_freq, yelp_train_rat, 'generated_datasets/yelp-train-vectors.txt')
+write_vector_data(yelp_valid_freq, yelp_valid_rat, 'generated_datasets/yelp-valid-vectors.txt')
+write_vector_data(yelp_test_freq, yelp_test_rat, 'generated_datasets/yelp-test-vectors.txt')
+write_vector_data(imdb_train_freq, imdb_train_rat, 'generated_datasets/imdb-train-vectors.txt')
+write_vector_data(imdb_valid_freq, imdb_valid_rat, 'generated_datasets/imdb-valid-vectors.txt')
+write_vector_data(imdb_test_freq, imdb_test_rat, 'generated_datasets/imdb-test-vectors.txt')
+
 # Create binary bag of words
 yelp_train_bin = vectorizer_bin.fit_transform(yelp_train_rev).todense()
 yelp_valid_bin = vectorizer_bin.fit_transform(yelp_valid_rev).todense()
@@ -84,9 +85,4 @@ yelp_test_bin = vectorizer_bin.fit_transform(yelp_test_rev).todense()
 imdb_train_bin = vectorizer_bin.fit_transform(imdb_train_rev).todense()
 imdb_valid_bin = vectorizer_bin.fit_transform(imdb_valid_rev).todense()
 imdb_test_bin = vectorizer_bin.fit_transform(imdb_test_rev).todense()
-write_vector_data(yelp_train_bin, yelp_train_rat, 'generated_datasets/yelp-train-binary-vectors.txt')
-write_vector_data(yelp_valid_bin, yelp_valid_rat, 'generated_datasets/yelp-valid-binary-vectors.txt')
-write_vector_data(yelp_test_bin, yelp_test_rat, 'generated_datasets/yelp-test-binary-vectors.txt')
-write_vector_data(imdb_train_bin, yelp_train_rat, 'generated_datasets/imdb-train-binary-vectors.txt')
-write_vector_data(imdb_valid_bin, yelp_valid_rat, 'generated_datasets/imdb-valid-binary-vectors.txt')
-write_vector_data(imdb_test_bin, yelp_test_rat, 'generated_datasets/imdb-test-binary-vectors.txt')
+print('All data cleaned and datasets vectorized. See generated_datasets folder for results.')
