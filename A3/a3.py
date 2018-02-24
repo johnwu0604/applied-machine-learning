@@ -156,7 +156,7 @@ print('Linear SVM Classifier \n(train, valid, test) = {}'.format(f1_prediction[:
 print('best parameters = {}'.format(f1_prediction[3]))
 
 ''' Part 3 - Yelp Classification Using Frequency Bag Of Words Representation \n '''
-print('Part 2 - Yelp Classification Using Frequency Bag Of Words Representation \n')
+print('Part 3 - Yelp Classification Using Frequency Bag Of Words Representation \n')
 
 # Random Classifier
 f1_prediction = random_classifier(yelp_freq)
@@ -182,7 +182,7 @@ print('best parameters = {}\n'.format(f1_prediction[3]))
 param = [{'max_iter': [100 * i for i in range(10)]}]
 f1_prediction = train_model(yelp_freq, LinearSVC(), param)
 print('Linear SVM Classifier \n(train, valid, test) = {}'.format(f1_prediction[:3]))
-print('best parameters = {}'.format(f1_prediction[3]))
+print('best parameters = {} \n'.format(f1_prediction[3]))
 
 ''' Part 4 (I) - IMDB Classification Using Binary Bag Of Words Representation \n '''
 print('Part 4 (I) - IMDB Classification Using Binary Bag Of Words Representation \n')
@@ -207,7 +207,7 @@ print('best parameters = {}\n'.format(f1_prediction[3]))
 param = [{'max_iter': [100 * i for i in range(10)]}]
 f1_prediction = train_model(imdb_binary, LinearSVC(), param)
 print('Linear SVM Classifier \n(train, valid, test) = {}'.format(f1_prediction[:3]))
-print('best parameters = {}'.format(f1_prediction[3]))
+print('best parameters = {} \n'.format(f1_prediction[3]))
 
 ''' Part 4 (II) - IMDB Classification Using Frequency Bag Of Words Representation \n '''
 print('Part 4 (II) - IMDB Classification Using Frequency Bag Of Words Representation \n')
