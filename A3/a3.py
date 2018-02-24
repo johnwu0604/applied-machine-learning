@@ -12,12 +12,12 @@ from sklearn.naive_bayes import GaussianNB, BernoulliNB
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.svm import LinearSVC
 
-num_features = 10000
-ds_path = './hwk3_datasets/'
 generated_ds_path = './generated_datasets/'
+ds_path = './hwk3_datasets/'
 ds_types = ['train', 'valid', 'test']
 ds = ['yelp-', 'IMDB-']
 classifier_average = 'micro'
+num_features = 10000
 
 def extract_features(set, n):
     file = ds_path + set + ds_types[0] + '.txt'
@@ -138,13 +138,13 @@ f1_prediction = majority_classifier(yelp_binary)
 print('Majority Classifier \n(train, valid, test): {} \n'.format(f1_prediction))
 
 # Naive Bayes
-params = [{'alpha': np.arange(0.2, 0.4, 0.6, 0.8)}]
+params = [{'alpha': np.arange(0.4, 0.6, 0.8)}]
 f1_prediction = train_model(yelp_binary, BernoulliNB(), params)
 print('Naive Bayes Classifier \n(train, valid, test) = {}'.format(f1_prediction[:3]))
 print('best parameters = {}\n'.format(f1_prediction[3]))
 
 # Decision Tree
-param = [{'max_depth': [i for i in range(14, 18)], 'max_features': [1000 * i for i in range(4, 8)], 'max_leaf_nodes': [1000 * i for i in range(5)]}]
+param = [{'max_depth': [i for i in range(14, 18)], 'max_features': [1000 * i for i in range(4, 8)], 'max_leaf_nodes': [1000 * i for i in range(1,5)]}]
 f1_prediction = train_model(yelp_binary, DecisionTreeClassifier(), param)
 print('Decision Tree \n(train, valid, test) = {}'.format(f1_prediction[:3]))
 print('best parameters = {}\n'.format(f1_prediction[3]))
@@ -167,13 +167,13 @@ f1_prediction = majority_classifier(yelp_freq)
 print('Majority Classifier \n(train, valid, test): {} \n'.format(f1_prediction))
 
 # Naive Bayes
-params = [{'alpha': np.arange(0.2, 0.4, 0.6, 0.8)}]
+params = [{'alpha': np.arange(0.4, 0.6, 0.8)}]
 f1_prediction = train_model(yelp_freq, BernoulliNB(), params)
 print('Naive Bayes Classifier \n(train, valid, test) = {}'.format(f1_prediction[:3]))
 print('best parameters = {}\n'.format(f1_prediction[3]))
 
 # Decision Tree
-param = [{'max_depth': [i for i in range(14, 18)], 'max_features': [1000 * i for i in range(4, 8)], 'max_leaf_nodes': [1000 * i for i in range(5)]}]
+param = [{'max_depth': [i for i in range(14, 18)], 'max_features': [1000 * i for i in range(4, 8)], 'max_leaf_nodes': [1000 * i for i in range(1,5)]}]
 f1_prediction = train_model(yelp_freq, DecisionTreeClassifier(), param)
 print('Decision Tree \n(train, valid, test) = {}'.format(f1_prediction[:3]))
 print('best parameters = {}\n'.format(f1_prediction[3]))
@@ -192,13 +192,13 @@ f1_prediction = random_classifier(imdb_binary)
 print('Random Classifier \n(train, valid, test): {} \n'.format(f1_prediction))
 
 # Naive Bayes
-params = [{'alpha': np.arange(0.2, 0.4, 0.6, 0.8)}]
+params = [{'alpha': np.arange(0.4, 0.6, 0.8)}]
 f1_prediction = train_model(imdb_binary, GaussianNB(), params)
 print('Naive Bayes Classifier \n(train, valid, test) = {}'.format(f1_prediction[:3]))
 print('best parameters = {}\n'.format(f1_prediction[3]))
 
 # Decision Tree
-param = [{'max_depth': [i for i in range(14, 18)], 'max_features': [1000 * i for i in range(4, 8)], 'max_leaf_nodes': [1000 * i for i in range(5)]}]
+param = [{'max_depth': [i for i in range(14, 18)], 'max_features': [1000 * i for i in range(4, 8)], 'max_leaf_nodes': [1000 * i for i in range(1,5)]}]
 f1_prediction = train_model(imdb_binary, DecisionTreeClassifier(), param)
 print('Decision Tree \n(train, valid, test) = {}'.format(f1_prediction[:3]))
 print('best parameters = {}\n'.format(f1_prediction[3]))
@@ -217,13 +217,13 @@ f1_prediction = random_classifier(imdb_binary)
 print('Random Classifier \n(train, valid, test): {} \n'.format(f1_prediction))
 
 # Naive Bayes
-params = [{'alpha': np.arange(0.2, 0.4, 0.6, 0.8)}]
+params = [{'alpha': np.arange(0.4, 0.6, 0.8)}]
 f1_prediction = train_model(imdb_binary, GaussianNB(), params)
 print('Naive Bayes Classifier \n(train, valid, test) = {}'.format(f1_prediction[:3]))
 print('best parameters = {}\n'.format(f1_prediction[3]))
 
 # Decision Tree
-param = [{'max_depth': [i for i in range(14, 18)], 'max_features': [1000 * i for i in range(4, 8)], 'max_leaf_nodes': [1000 * i for i in range(5)]}]
+param = [{'max_depth': [i for i in range(14, 18)], 'max_features': [1000 * i for i in range(4, 8)], 'max_leaf_nodes': [1000 * i for i in range(1,5)]}]
 f1_prediction = train_model(imdb_binary, DecisionTreeClassifier(), param)
 print('Decision Tree \n(train, valid, test) = {}'.format(f1_prediction[:3]))
 print('best parameters = {}\n'.format(f1_prediction[3]))
