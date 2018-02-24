@@ -69,7 +69,7 @@ def to_bow(features, set):
         text = list(filter(None, text.lower().replace('\t', ' ').replace('<br /><br />', ' ').translate(translator).split('\n')))
         output = np.array([int(line[-1]) for line in text])
         input = [line[:-1] for line in text]
-        # user vectorizer object create binary and frequency bag of words
+        # use vectorizer object create binary and frequency bag of words
         vectorizer = CountVectorizer(vocabulary=features.keys())
         vectors = np.asarray(vectorizer.fit_transform(input).todense())
         freq[type] = [sparse.csr_matrix(normalize(vectors)), output]
@@ -97,9 +97,8 @@ def majority_classifier(set):
 def train_model(set, classifier, params):
 
     if params != None:
-        fold = [-1 for i in range(set['train'][0].shape[0])] + [0 for i in range(set['valid'][0].shape[0])]
-        ps = PredefinedSplit(test_fold=fold)
-        classifier = GridSearchCV(classifier, params, cv=ps, refit=True)
+        split = PredefinedSplit(test_fold=[-1 for i in range(set['train'][0].shape[0])] + [0 for i in range(set['valid'][0].shape[0])])
+        classifier = GridSearchCV(classifier, params, cv=split, refit=True)
         merged_input = sparse.vstack([set['train'][0], set['valid'][0]])
         merged_output = np.concatenate((set['train'][1], set['valid'][1]))
         classifier.fit(merged_input, merged_output)
@@ -127,7 +126,7 @@ imdb_binary, imdb_freq = to_bow(features, ds[1])
 
 print('Dataset cleaned and vectorized. Results can be found in generated folder \n')
 
-''' Part 2 - Using Binary Bag Of Words Representation (Yelp) \n '''
+''' Part 2 - Yelp Classification Using Binary Bag Of Words Representation \n '''
 print('Part 2 - Yelp Classification Using Binary Bag Of Words Representation \n')
 
 # Random Classifier
@@ -135,24 +134,102 @@ f1_prediction = random_classifier(yelp_binary)
 print('Random Classifier \n(train, valid, test): {} \n'.format(f1_prediction))
 
 # Majority Classifier
-f1_prediction = random_classifier(yelp_binary)
-print('Majority Classifier \n(train, valid, test): } \n'.format(f1_prediction))
+f1_prediction = majority_classifier(yelp_binary)
+print('Majority Classifier \n(train, valid, test): {} \n'.format(f1_prediction))
 
 # Naive Bayes
-params = [{'alpha': np.arange(0.6, 0.8, 0.01)}]
+params = [{'alpha': np.arange(0.2, 0.4, 0.6, 0.8)}]
 f1_prediction = train_model(yelp_binary, BernoulliNB(), params)
 print('Naive Bayes Classifier \n(train, valid, test) = {}'.format(f1_prediction[:3]))
-print('best parameter = {}\n'.format(f1_prediction[3]))
+print('best parameters = {}\n'.format(f1_prediction[3]))
 
 # Decision Tree
-param = [{'max_depth': [i for i in range(10, 20)], 'max_features': [1000 * i for i in range(2, 7)], 'max_leaf_nodes': [1000 * i for i in range(3, 6)]}]
+param = [{'max_depth': [i for i in range(14, 18)], 'max_features': [1000 * i for i in range(4, 8)], 'max_leaf_nodes': [1000 * i for i in range(5)]}]
 f1_prediction = train_model(yelp_binary, DecisionTreeClassifier(), param)
-print(set, 'Decision Tree \n(train, valid, test) = {}'.format(f1_prediction[:3]))
-print('best parameter = {}\n'.format(f1_prediction[3]))
+print('Decision Tree \n(train, valid, test) = {}'.format(f1_prediction[:3]))
+print('best parameters = {}\n'.format(f1_prediction[3]))
 
 # Linear SVM
-param = [{'max_iter': [500 * i for i in range(5)]}]
+param = [{'max_iter': [100 * i for i in range(10)]}]
 f1_prediction = train_model(yelp_binary, LinearSVC(), param)
-print(set, 'Linear SVM Classifier \n(train, valid, test) = {}'.format(f1_prediction[:3]))
-print('best parameter = {}'.format(f1_prediction[3]))
+print('Linear SVM Classifier \n(train, valid, test) = {}'.format(f1_prediction[:3]))
+print('best parameters = {}'.format(f1_prediction[3]))
 
+''' Part 3 - Yelp Classification Using Frequency Bag Of Words Representation \n '''
+print('Part 2 - Yelp Classification Using Frequency Bag Of Words Representation \n')
+
+# Random Classifier
+f1_prediction = random_classifier(yelp_freq)
+print('Random Classifier \n(train, valid, test): {} \n'.format(f1_prediction))
+
+# Majority Classifier
+f1_prediction = majority_classifier(yelp_freq)
+print('Majority Classifier \n(train, valid, test): {} \n'.format(f1_prediction))
+
+# Naive Bayes
+params = [{'alpha': np.arange(0.2, 0.4, 0.6, 0.8)}]
+f1_prediction = train_model(yelp_freq, BernoulliNB(), params)
+print('Naive Bayes Classifier \n(train, valid, test) = {}'.format(f1_prediction[:3]))
+print('best parameters = {}\n'.format(f1_prediction[3]))
+
+# Decision Tree
+param = [{'max_depth': [i for i in range(14, 18)], 'max_features': [1000 * i for i in range(4, 8)], 'max_leaf_nodes': [1000 * i for i in range(5)]}]
+f1_prediction = train_model(yelp_freq, DecisionTreeClassifier(), param)
+print('Decision Tree \n(train, valid, test) = {}'.format(f1_prediction[:3]))
+print('best parameters = {}\n'.format(f1_prediction[3]))
+
+# Linear SVM
+param = [{'max_iter': [100 * i for i in range(10)]}]
+f1_prediction = train_model(yelp_freq, LinearSVC(), param)
+print('Linear SVM Classifier \n(train, valid, test) = {}'.format(f1_prediction[:3]))
+print('best parameters = {}'.format(f1_prediction[3]))
+
+''' Part 4 (I) - IMDB Classification Using Binary Bag Of Words Representation \n '''
+print('Part 4 (I) - IMDB Classification Using Binary Bag Of Words Representation \n')
+
+# Random Classifier
+f1_prediction = random_classifier(imdb_binary)
+print('Random Classifier \n(train, valid, test): {} \n'.format(f1_prediction))
+
+# Naive Bayes
+params = [{'alpha': np.arange(0.2, 0.4, 0.6, 0.8)}]
+f1_prediction = train_model(imdb_binary, GaussianNB(), params)
+print('Naive Bayes Classifier \n(train, valid, test) = {}'.format(f1_prediction[:3]))
+print('best parameters = {}\n'.format(f1_prediction[3]))
+
+# Decision Tree
+param = [{'max_depth': [i for i in range(14, 18)], 'max_features': [1000 * i for i in range(4, 8)], 'max_leaf_nodes': [1000 * i for i in range(5)]}]
+f1_prediction = train_model(imdb_binary, DecisionTreeClassifier(), param)
+print('Decision Tree \n(train, valid, test) = {}'.format(f1_prediction[:3]))
+print('best parameters = {}\n'.format(f1_prediction[3]))
+
+# Linear SVM
+param = [{'max_iter': [100 * i for i in range(10)]}]
+f1_prediction = train_model(imdb_binary, LinearSVC(), param)
+print('Linear SVM Classifier \n(train, valid, test) = {}'.format(f1_prediction[:3]))
+print('best parameters = {}'.format(f1_prediction[3]))
+
+''' Part 4 (II) - IMDB Classification Using Frequency Bag Of Words Representation \n '''
+print('Part 4 (II) - IMDB Classification Using Frequency Bag Of Words Representation \n')
+
+# Random Classifier
+f1_prediction = random_classifier(imdb_binary)
+print('Random Classifier \n(train, valid, test): {} \n'.format(f1_prediction))
+
+# Naive Bayes
+params = [{'alpha': np.arange(0.2, 0.4, 0.6, 0.8)}]
+f1_prediction = train_model(imdb_binary, GaussianNB(), params)
+print('Naive Bayes Classifier \n(train, valid, test) = {}'.format(f1_prediction[:3]))
+print('best parameters = {}\n'.format(f1_prediction[3]))
+
+# Decision Tree
+param = [{'max_depth': [i for i in range(14, 18)], 'max_features': [1000 * i for i in range(4, 8)], 'max_leaf_nodes': [1000 * i for i in range(5)]}]
+f1_prediction = train_model(imdb_binary, DecisionTreeClassifier(), param)
+print('Decision Tree \n(train, valid, test) = {}'.format(f1_prediction[:3]))
+print('best parameters = {}\n'.format(f1_prediction[3]))
+
+# Linear SVM
+param = [{'max_iter': [100 * i for i in range(10)]}]
+f1_prediction = train_model(imdb_binary, LinearSVC(), param)
+print('Linear SVM Classifier \n(train, valid, test) = {}'.format(f1_prediction[:3]))
+print('best parameters = {}'.format(f1_prediction[3]))
